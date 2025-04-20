@@ -4,8 +4,12 @@ class Database {
     private $pdo;
 
     public function __construct($path) {
-        $this->pdo = new PDO("sqlite:" . $path);
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        try {
+            $this->pdo = new PDO("sqlite:" . $path);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Ошибка подключения к базе данных: " . $e->getMessage());
+        }
     }
 
     public function Execute($sql) {
